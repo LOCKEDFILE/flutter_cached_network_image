@@ -106,7 +106,7 @@ class MultiImageStreamCompleter extends ImageStreamCompleter {
       _frameDuration = _nextFrame!.duration;
 
       if (_frameDuration == Duration.zero) {
-        _frameDuration = const Duration(milliseconds: 50);
+        _frameDuration = const Duration(milliseconds: 100);
       }
 
       _nextFrame = null;
