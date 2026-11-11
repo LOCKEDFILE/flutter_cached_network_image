@@ -1,0 +1,34 @@
+name: PR 988 isolated verification
+
+on:
+  push:
+    branches: [codex/pr988-review-verification-20261111]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: cached_network_image
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Check changed Dart files
+        run: >-
+          dart format --output=none --set-exit-if-changed
+          lib/src/cached_image_widget.dart
+          lib/src/image_provider/cached_network_image_provider.dart
+          lib/src/image_provider/multi_image_stream_completer.dart
+          test/image_provider_test.dart
+          test/image_stream_completer_test.dart
+          test/image_widget_test.dart
+      - run: flutter analyze
+      - run: flutter test --coverage
